@@ -1,0 +1,18 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.piksel.Core">
+    <method name="GetSetting">
+      <arg direction="in" type="s" name="key"/>
+      <arg direction="out" type="s" name="value"/>
+    </method>
+    <method name="SetSetting">
+      <arg direction="in" type="s" name="key"/>
+      <arg direction="in" type="s" name="value"/>
+    </method>
+    <signal name="SettingChanged">
+      <arg type="s" name="key"/>
+      <arg type="s" name="value"/>
+    </signal>
+  </interface>
+</node>

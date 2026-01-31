@@ -1,0 +1,35 @@
+<!DOCTYPE RCC>
+<RCC>
+  <qresource prefix="/">
+    <file alias="qml/Launcher/PikselLauncher.qml">../qml/Launcher/PikselLauncher.qml</file>
+    <file alias="qml/Launcher/LauncherCustomApps.qml">../qml/Launcher/LauncherCustomApps.qml</file>
+    <file alias="qml/Wallpaper/PikselWallpaper.qml">../qml/Wallpaper/PikselWallpaper.qml</file>
+    <file alias="qml/Panel/PikselPanel.qml">../qml/Panel/PikselPanel.qml</file>
+    <file alias="qml/Panel/CalendarOverlay.qml">../qml/Panel/CalendarOverlay.qml</file>
+    <file alias="qml/Panel/VolumeOverlay.qml">../qml/Panel/VolumeOverlay.qml</file>
+    <file alias="qml/Panel/NetworkOverlay.qml">../qml/Panel/NetworkOverlay.qml</file>
+    <file alias="qml/Panel/PinnedAppsOverlay.qml">../qml/Panel/PinnedAppsOverlay.qml</file>
+    <file alias="qml/Panel/DockContextMenuOverlay.qml">../qml/Panel/DockContextMenuOverlay.qml</file>
+  </qresource>
+  <qresource prefix="/">
+    <file alias="resources/icons/return.png">icons/return.png</file>
+    <file alias="resources/icons/drop.png">icons/drop.png</file>
+    <file alias="resources/icons/folder.png">icons/folder.png</file>
+    <file alias="resources/icons/battery.png">icons/battery.png</file>
+    <file alias="resources/icons/clock.png">icons/clock.png</file>
+    <file alias="resources/icons/volume.png">icons/volume.png</file>
+    <file alias="resources/icons/network.png">icons/network.png</file>
+    <file alias="resources/icons/settings.png">icons/settings.png</file>
+    <file alias="resources/icons/wifi_strength_full.png">icons/wifi_strength_full.png</file>
+    <file alias="resources/icons/wifi_strength_high.png">icons/wifi_strength_high.png</file>
+    <file alias="resources/icons/wifi_strength_medium.png">icons/wifi_strength_medium.png</file>
+    <file alias="resources/icons/wifi_strength_low.png">icons/wifi_strength_low.png</file>
+    <file alias="resources/icons/droplet.png">icons/droplet.png</file>
+    <file alias="resources/icons/launcher.png">icons/launcher.png</file>
+    <file alias="resources/icons/pinned.png">icons/pinned.png</file>
+    <file alias="resources/icons/lock.png">icons/lock.png</file>
+    <file alias="resources/icons/suspend.png">icons/suspend.png</file>
+    <file alias="resources/icons/power.png">icons/power.png</file>
+    <file alias="resources/icons/exitPanel.png">icons/exitPanel.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,99 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 3
+  },
+  "configurePresets": [
+    {
+      "name": "base-x86_64-clang",
+      "displayName": "Base (x86_64, clang)",
+      "description": "Shared settings for x86_64 builds using clang/clang++.",
+      "hidden": true,
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "debug-x86_64-clang",
+      "displayName": "Debug (x86_64, clang)",
+      "inherits": "base-x86_64-clang",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "debug-x86_64-clang-systemqt",
+      "displayName": "Debug (x86_64, clang, system Qt6)",
+      "inherits": "debug-x86_64-clang",
+      "cacheVariables": {
+        "Qt6_DIR": "/usr/lib/x86_64-linux-gnu/cmake/Qt6"
+      }
+    },
+    {
+      "name": "debug-x86_64-clang-env-qt6",
+      "displayName": "Debug (x86_64, clang, Qt6_DIR from env)",
+      "description": "Set Qt6_DIR in your environment (export Qt6_DIR=/path/to/lib/cmake/Qt6).",
+      "inherits": "debug-x86_64-clang",
+      "cacheVariables": {
+        "Qt6_DIR": "$env{Qt6_DIR}"
+      }
+    },
+    {
+      "name": "release-x86_64-clang",
+      "displayName": "Release (x86_64, clang)",
+      "inherits": "base-x86_64-clang",
+      "binaryDir": "${sourceDir}/build-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "release-x86_64-clang-systemqt",
+      "displayName": "Release (x86_64, clang, system Qt6)",
+      "inherits": "release-x86_64-clang",
+      "cacheVariables": {
+        "Qt6_DIR": "/usr/lib/x86_64-linux-gnu/cmake/Qt6"
+      }
+    },
+    {
+      "name": "release-x86_64-clang-env-qt6",
+      "displayName": "Release (x86_64, clang, Qt6_DIR from env)",
+      "description": "Set Qt6_DIR in your environment (export Qt6_DIR=/path/to/lib/cmake/Qt6).",
+      "inherits": "release-x86_64-clang",
+      "cacheVariables": {
+        "Qt6_DIR": "$env{Qt6_DIR}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug-x86_64-clang",
+      "configurePreset": "debug-x86_64-clang"
+    },
+    {
+      "name": "debug-x86_64-clang-systemqt",
+      "configurePreset": "debug-x86_64-clang-systemqt"
+    },
+    {
+      "name": "debug-x86_64-clang-env-qt6",
+      "configurePreset": "debug-x86_64-clang-env-qt6"
+    },
+    {
+      "name": "release-x86_64-clang",
+      "configurePreset": "release-x86_64-clang"
+    },
+    {
+      "name": "release-x86_64-clang-systemqt",
+      "configurePreset": "release-x86_64-clang-systemqt"
+    },
+    {
+      "name": "release-x86_64-clang-env-qt6",
+      "configurePreset": "release-x86_64-clang-env-qt6"
+    }
+  ]
+}
