@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-#include "../../shell/ShellComponent.hpp"
+#include "shell/ShellComponent.hpp"
 
 class AppDockModel;
 class LauncherAppsModel;

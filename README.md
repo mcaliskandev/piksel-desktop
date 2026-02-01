@@ -24,13 +24,13 @@ PikselDesktop is licensed under the MIT License.
 See the [LICENSE](LICENSE) file for details.
 
 ## Modules
-- Shell Manager
-- Core
-- Components
-  - Panel
-  - Launcher
-  - Wallpaper
-  - Settings 
+- Shell Manager (host process)
+- Core (DBus service/client)
+- Surfaces (panel, desktop + wallpaper)
+- Applets (clock, battery, network, running apps)
+- Launcher
+- Settings
+- Shared resources (icons/assets)
 
 ## Build
 
@@ -61,16 +61,18 @@ WAYLAND_DISPLAY=wayland-0 build/PikselDesktop
 ## Developer Notes
 
 ### Repository layout (high level)
-- `shell/src/`: C++ implementation for shell and UI components
-- `shell/qml/`: QML UI files bundled into the binary via `shell/resources/resources.qrc`
-- `shell/resources/`: icons and other assets (also referenced by `shell/resources/resources.qrc`)
-- `shell/resources/resources.qrc`: source for QML/assets are compiled into the Qt resource system
+- `shell/`: shell host (main, ShellManager), DBus client helpers
+- `surfaces/`: host containers (`panel`, `desktop`) that load plugins
+- `applets/`: applets used by surfaces (battery, clock, network, running apps)
+- `launcher/`: app launcher plugin and QML
+- `settings/`: settings windows and UI forms
+- `shared/resources/`: icons and QML resource manifest (`shared/resources/resources.qrc`)
 - `scripts/dev.sh`: script for developer to easily configure/build/run/clean the code
 
 ### Change guidelines
 - Prefer small, focused patches; keep unrelated refactors out of feature/bugfix PRs.
 - When adding/removing source files, update `CMakeLists.txt` (executable sources list).
-- When adding/removing QML or resource files, update `shell/resources/resources.qrc`.
+- When adding/removing QML or resource files, update `shared/resources/resources.qrc`.
 - Keep UI wiring signal-based (Qt signals/slots, QML signals) to avoid tight coupling across components.
 
 ### Suggested checks before handoff

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../core/PikselCoreClient.hpp"
+#include "shell/PikselCoreClient.hpp"
 
 #include <QObject>
 #include <QVariantList>
@@ -34,4 +34,3 @@ private:
     PikselCoreClient m_core;
     QVariantList m_apps;
 };
-

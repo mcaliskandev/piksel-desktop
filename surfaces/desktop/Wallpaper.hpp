@@ -5,8 +5,8 @@
 #include <QQuickWidget>
 #include <QString>
 #include <string>
-#include "../../core/PikselCoreClient.hpp"
-#include "../../shell/ShellComponent.hpp"
+#include "shell/PikselCoreClient.hpp"
+#include "shell/ShellComponent.hpp"
 
 class QQuickItem;
 

@@ -10,7 +10,7 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Qml Quick QuickWidgets DBus)
 
-qt_add_resources(RESOURCES shell/resources/resources.qrc)
+qt_add_resources(RESOURCES shared/resources/resources.qrc)
 
 qt_add_dbus_adaptor(PIKSEL_CORE_DBUS_SRCS
     "${CMAKE_CURRENT_SOURCE_DIR}/core/src/dbus/piksel.core.xml"
@@ -27,33 +27,34 @@ if(EXISTS "${PIKSEL_FM_QML_FILE}")
 endif()
 
 add_executable(PikselDesktop
-    shell/src/main.cpp
-    shell/src/components/panel/Panel.cpp
-    shell/src/components/panel/Panel.hpp
-    shell/src/components/panel/PanelBattery.cpp
-    shell/src/components/panel/PanelBattery.hpp
-    shell/src/components/panel/PanelClock.cpp
-    shell/src/components/panel/PanelClock.hpp
-    shell/src/components/panel/PanelNetwork.cpp
-    shell/src/components/panel/PanelNetwork.hpp
-    shell/src/components/panel/PanelRunningApps.cpp
-    shell/src/components/panel/PanelRunningApps.hpp
-    shell/src/components/launcher/Launcher.cpp
-    shell/src/components/launcher/Launcher.hpp
-    shell/src/components/launcher/LauncherAppsModel.cpp
-    shell/src/components/launcher/LauncherAppsModel.hpp
-    shell/src/components/wallpaper/Wallpaper.cpp
-    shell/src/components/wallpaper/Wallpaper.hpp
-    shell/src/components/settings/SettingsWindow.hpp
-    shell/src/components/settings/SettingsWindow.cpp
-    shell/ui/SettingsWindow.ui
-    shell/ui/SettingsWallpaper.ui
-    shell/src/core/PikselCoreClient.cpp
-    shell/src/core/PikselCoreClient.hpp
-    shell/src/shell/AppDockModel.cpp
-    shell/src/shell/AppDockModel.hpp
-    shell/src/shell/ShellManager.cpp
-    shell/src/shell/ShellManager.hpp
+    shell/main.cpp
+    surfaces/panel/Panel.cpp
+    surfaces/panel/Panel.hpp
+    applets/battery/PanelBattery.cpp
+    applets/battery/PanelBattery.hpp
+    applets/clock/PanelClock.cpp
+    applets/clock/PanelClock.hpp
+    applets/network/PanelNetwork.cpp
+    applets/network/PanelNetwork.hpp
+    applets/runningapps/PanelRunningApps.cpp
+    applets/runningapps/PanelRunningApps.hpp
+    launcher/Launcher.cpp
+    launcher/Launcher.hpp
+    launcher/LauncherAppsModel.cpp
+    launcher/LauncherAppsModel.hpp
+    surfaces/desktop/Wallpaper.cpp
+    surfaces/desktop/Wallpaper.hpp
+    settings/SettingsWindow.hpp
+    settings/SettingsWindow.cpp
+    settings/ui/SettingsWindow.ui
+    settings/ui/SettingsWallpaper.ui
+    shell/PikselCoreClient.cpp
+    shell/PikselCoreClient.hpp
+    shell/AppDockModel.cpp
+    shell/AppDockModel.hpp
+    shell/ShellManager.cpp
+    shell/ShellManager.hpp
+    shell/ShellComponent.hpp
     core/src/CoreService.cpp
     core/src/config/Config.cpp
     ${RESOURCES}
@@ -62,7 +63,7 @@ add_executable(PikselDesktop
 )
 
 set_property(TARGET PikselDesktop PROPERTY AUTOUIC_SEARCH_PATHS
-    "${CMAKE_CURRENT_SOURCE_DIR}/shell/ui"
+    "${CMAKE_CURRENT_SOURCE_DIR}/settings/ui"
 )
 
 # Use the external Pusula project (placed alongside PikselDesktop)
@@ -78,5 +79,7 @@ target_link_libraries(PikselDesktop PRIVATE Qt6::Widgets Qt6::Qml Qt6::Quick Qt6
 
 target_include_directories(PikselDesktop PRIVATE
     "${CMAKE_CURRENT_BINARY_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/shell"
     "${CMAKE_CURRENT_SOURCE_DIR}/core/src"
 )

@@ -1,7 +1,7 @@
 #ifndef SETTINGSWINDOW_HPP
 #define SETTINGSWINDOW_HPP
 
-#include "../../core/PikselCoreClient.hpp"
+#include "shell/PikselCoreClient.hpp"
 #include <QString>
 #include <QWidget>
 #include <memory>

@@ -13,7 +13,7 @@ PikselWallpaper::PikselWallpaper(QWidget* parent)
 
     setResizeMode(QQuickWidget::SizeRootObjectToView);
     rootContext()->setContextProperty("wallpaper", this);
-    setSource(QUrl(QStringLiteral("qrc:/qml/Wallpaper/PikselWallpaper.qml")));
+    setSource(QUrl(QStringLiteral("qrc:/surfaces/desktop/PikselWallpaper.qml")));
     if (status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML wallpaper:" << errors();
     }

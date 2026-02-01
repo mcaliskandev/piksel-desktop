@@ -13,7 +13,7 @@
 #endif
 
 #include "LauncherAppsModel.hpp"
-#include "../../shell/AppDockModel.hpp"
+#include "shell/AppDockModel.hpp"
 
 static bool runDetachedShellCommand(const QString& command)
 {
@@ -30,7 +30,7 @@ PikselLauncher::PikselLauncher(QWidget* parent)
     rootContext()->setContextProperty("launcher", this);
     m_appsModel = std::make_unique<LauncherAppsModel>(this);
     rootContext()->setContextProperty("launcherApps", m_appsModel.get());
-    setSource(QUrl(QStringLiteral("qrc:/qml/Launcher/PikselLauncher.qml")));
+    setSource(QUrl(QStringLiteral("qrc:/launcher/PikselLauncher.qml")));
 
     if (status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML launcher:" << errors();

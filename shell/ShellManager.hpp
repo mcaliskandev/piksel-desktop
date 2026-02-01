@@ -9,9 +9,9 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-#include "../components/panel/Panel.hpp"
-#include "../components/wallpaper/Wallpaper.hpp"
-#include "../components/launcher/Launcher.hpp"
+#include "surfaces/panel/Panel.hpp"
+#include "surfaces/desktop/Wallpaper.hpp"
+#include "launcher/Launcher.hpp"
 #include "ShellComponent.hpp"
 
 class AppDockModel;

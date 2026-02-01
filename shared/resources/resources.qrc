@@ -1,15 +1,15 @@
 <!DOCTYPE RCC>
 <RCC>
   <qresource prefix="/">
-    <file alias="qml/Launcher/PikselLauncher.qml">../qml/Launcher/PikselLauncher.qml</file>
-    <file alias="qml/Launcher/LauncherCustomApps.qml">../qml/Launcher/LauncherCustomApps.qml</file>
-    <file alias="qml/Wallpaper/PikselWallpaper.qml">../qml/Wallpaper/PikselWallpaper.qml</file>
-    <file alias="qml/Panel/PikselPanel.qml">../qml/Panel/PikselPanel.qml</file>
-    <file alias="qml/Panel/CalendarOverlay.qml">../qml/Panel/CalendarOverlay.qml</file>
-    <file alias="qml/Panel/VolumeOverlay.qml">../qml/Panel/VolumeOverlay.qml</file>
-    <file alias="qml/Panel/NetworkOverlay.qml">../qml/Panel/NetworkOverlay.qml</file>
-    <file alias="qml/Panel/PinnedAppsOverlay.qml">../qml/Panel/PinnedAppsOverlay.qml</file>
-    <file alias="qml/Panel/DockContextMenuOverlay.qml">../qml/Panel/DockContextMenuOverlay.qml</file>
+    <file alias="launcher/PikselLauncher.qml">../../launcher/qml/PikselLauncher.qml</file>
+    <file alias="launcher/LauncherCustomApps.qml">../../launcher/qml/LauncherCustomApps.qml</file>
+    <file alias="surfaces/desktop/PikselWallpaper.qml">../../surfaces/desktop/qml/PikselWallpaper.qml</file>
+    <file alias="surfaces/panel/PikselPanel.qml">../../surfaces/panel/qml/PikselPanel.qml</file>
+    <file alias="surfaces/panel/CalendarOverlay.qml">../../surfaces/panel/qml/CalendarOverlay.qml</file>
+    <file alias="surfaces/panel/VolumeOverlay.qml">../../surfaces/panel/qml/VolumeOverlay.qml</file>
+    <file alias="surfaces/panel/NetworkOverlay.qml">../../surfaces/panel/qml/NetworkOverlay.qml</file>
+    <file alias="surfaces/panel/PinnedAppsOverlay.qml">../../surfaces/panel/qml/PinnedAppsOverlay.qml</file>
+    <file alias="surfaces/panel/DockContextMenuOverlay.qml">../../surfaces/panel/qml/DockContextMenuOverlay.qml</file>
   </qresource>
   <qresource prefix="/">
     <file alias="resources/icons/return.png">icons/return.png</file>

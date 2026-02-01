@@ -1,5 +1,5 @@
-#include "../core/src/CoreService.hpp"
-#include "../core/src/config/Config.hpp"
+#include "core/src/CoreService.hpp"
+#include "core/src/config/Config.hpp"
 #include "shell/ShellManager.hpp"
 #include <QApplication>
 #include <QDBusConnection>

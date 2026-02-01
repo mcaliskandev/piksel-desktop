@@ -1,6 +1,6 @@
 #include "AppDockModel.hpp"
 
-#include "../core/PikselCoreClient.hpp"
+#include "shell/PikselCoreClient.hpp"
 
 #include <QJsonArray>
 #include <QJsonDocument>

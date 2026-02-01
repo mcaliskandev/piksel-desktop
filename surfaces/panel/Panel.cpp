@@ -1,9 +1,9 @@
 #include "Panel.hpp"
 
-#include "PanelBattery.hpp"
-#include "PanelClock.hpp"
-#include "PanelNetwork.hpp"
-#include "PanelRunningApps.hpp"
+#include "applets/battery/PanelBattery.hpp"
+#include "applets/clock/PanelClock.hpp"
+#include "applets/network/PanelNetwork.hpp"
+#include "applets/runningapps/PanelRunningApps.hpp"
 
 #include <QDebug>
 #include <QGuiApplication>
@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "../../shell/AppDockModel.hpp"
+#include "shell/AppDockModel.hpp"
 
 PikselPanel::PikselPanel(QWidget* parent)
     : QQuickWidget(parent)
@@ -37,7 +37,7 @@ PikselPanel::PikselPanel(QWidget* parent)
     rootContext()->setContextProperty("panelRunningApps", m_runningApps.get());
     rootContext()->setContextProperty("dockApps", m_dockModel);
 
-    setSource(QUrl(QStringLiteral("qrc:/qml/Panel/PikselPanel.qml")));
+    setSource(QUrl(QStringLiteral("qrc:/surfaces/panel/PikselPanel.qml")));
     if (status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML panel:" << errors();
     }
@@ -45,7 +45,7 @@ PikselPanel::PikselPanel(QWidget* parent)
     m_calendarWidget = new QQuickWidget(parent);
     m_calendarWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     m_calendarWidget->setClearColor(Qt::transparent);
-    m_calendarWidget->setSource(QUrl(QStringLiteral("qrc:/qml/Panel/CalendarOverlay.qml")));
+    m_calendarWidget->setSource(QUrl(QStringLiteral("qrc:/surfaces/panel/CalendarOverlay.qml")));
     if (m_calendarWidget->status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML calendar:" << m_calendarWidget->errors();
     }
@@ -61,7 +61,7 @@ PikselPanel::PikselPanel(QWidget* parent)
     m_volumeWidget = new QQuickWidget(parent);
     m_volumeWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     m_volumeWidget->setClearColor(Qt::transparent);
-    m_volumeWidget->setSource(QUrl(QStringLiteral("qrc:/qml/Panel/VolumeOverlay.qml")));
+    m_volumeWidget->setSource(QUrl(QStringLiteral("qrc:/surfaces/panel/VolumeOverlay.qml")));
     if (m_volumeWidget->status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML volume:" << m_volumeWidget->errors();
     }
@@ -75,7 +75,7 @@ PikselPanel::PikselPanel(QWidget* parent)
     m_networkWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     m_networkWidget->setClearColor(Qt::transparent);
     m_networkWidget->rootContext()->setContextProperty("panelNetwork", m_network.get());
-    m_networkWidget->setSource(QUrl(QStringLiteral("qrc:/qml/Panel/NetworkOverlay.qml")));
+    m_networkWidget->setSource(QUrl(QStringLiteral("qrc:/surfaces/panel/NetworkOverlay.qml")));
     if (m_networkWidget->status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML network:" << m_networkWidget->errors();
     }
@@ -89,7 +89,7 @@ PikselPanel::PikselPanel(QWidget* parent)
     m_pinnedAppsWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     m_pinnedAppsWidget->setClearColor(Qt::transparent);
     m_pinnedAppsWidget->rootContext()->setContextProperty("dockApps", m_dockModel);
-    m_pinnedAppsWidget->setSource(QUrl(QStringLiteral("qrc:/qml/Panel/PinnedAppsOverlay.qml")));
+    m_pinnedAppsWidget->setSource(QUrl(QStringLiteral("qrc:/surfaces/panel/PinnedAppsOverlay.qml")));
     if (m_pinnedAppsWidget->status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML pinned apps:" << m_pinnedAppsWidget->errors();
     }
@@ -106,7 +106,7 @@ PikselPanel::PikselPanel(QWidget* parent)
     m_dockContextWidget->setAttribute(Qt::WA_TranslucentBackground);
     m_dockContextWidget->rootContext()->setContextProperty("panel", this);
     m_dockContextWidget->rootContext()->setContextProperty("dockApps", m_dockModel);
-    m_dockContextWidget->setSource(QUrl(QStringLiteral("qrc:/qml/Panel/DockContextMenuOverlay.qml")));
+    m_dockContextWidget->setSource(QUrl(QStringLiteral("qrc:/surfaces/panel/DockContextMenuOverlay.qml")));
     if (m_dockContextWidget->status() != QQuickWidget::Ready) {
         qCritical() << "Failed to load QML dock context menu:" << m_dockContextWidget->errors();
     }

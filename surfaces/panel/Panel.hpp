@@ -10,8 +10,8 @@
 #include <memory>
 #include <string>
 
-#include "../settings/SettingsWindow.hpp"
-#include "../../shell/ShellComponent.hpp"
+#include "settings/SettingsWindow.hpp"
+#include "shell/ShellComponent.hpp"
 
 class PanelBatteryStatus;
 class PanelClockStatus;
