@@ -8,15 +8,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Qml Quick QuickWidgets DBus)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Qml Quick QuickWidgets DBus)
 
 qt_add_resources(RESOURCES shared/resources/resources.qrc)
-
-qt_add_dbus_adaptor(PIKSEL_CORE_DBUS_SRCS
-    "${CMAKE_CURRENT_SOURCE_DIR}/core/src/dbus/piksel.core.xml"
-    "${CMAKE_CURRENT_SOURCE_DIR}/core/src/CoreService.hpp"
-    CoreService
-)
 
 set(PIKSEL_FM_RESOURCES "")
 set(PIKSEL_FM_QML_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../Pusula/qml/Pusula/Pusula.qml")
@@ -26,44 +20,19 @@ if(EXISTS "${PIKSEL_FM_QML_FILE}")
     qt_add_resources(PIKSEL_FM_RESOURCES "${PIKSEL_FM_QRC_FILE}")
 endif()
 
+add_subdirectory(shell)
+add_subdirectory(applets)
+add_subdirectory(settings)
+add_subdirectory(launcher)
+add_subdirectory(surfaces)
+add_subdirectory(core/src)
+
 add_executable(PikselDesktop
     shell/main.cpp
-    surfaces/panel/Panel.cpp
-    surfaces/panel/Panel.hpp
-    applets/battery/PanelBattery.cpp
-    applets/battery/PanelBattery.hpp
-    applets/clock/PanelClock.cpp
-    applets/clock/PanelClock.hpp
-    applets/network/PanelNetwork.cpp
-    applets/network/PanelNetwork.hpp
-    applets/runningapps/PanelRunningApps.cpp
-    applets/runningapps/PanelRunningApps.hpp
-    launcher/Launcher.cpp
-    launcher/Launcher.hpp
-    launcher/LauncherAppsModel.cpp
-    launcher/LauncherAppsModel.hpp
-    surfaces/desktop/Wallpaper.cpp
-    surfaces/desktop/Wallpaper.hpp
-    settings/SettingsWindow.hpp
-    settings/SettingsWindow.cpp
-    settings/ui/SettingsWindow.ui
-    settings/ui/SettingsWallpaper.ui
-    shell/PikselCoreClient.cpp
-    shell/PikselCoreClient.hpp
-    shell/AppDockModel.cpp
-    shell/AppDockModel.hpp
     shell/ShellManager.cpp
     shell/ShellManager.hpp
-    shell/ShellComponent.hpp
-    core/src/CoreService.cpp
-    core/src/config/Config.cpp
     ${RESOURCES}
     ${PIKSEL_FM_RESOURCES}
-    ${PIKSEL_CORE_DBUS_SRCS}
-)
-
-set_property(TARGET PikselDesktop PROPERTY AUTOUIC_SEARCH_PATHS
-    "${CMAKE_CURRENT_SOURCE_DIR}/settings/ui"
 )
 
 # Use the external Pusula project (placed alongside PikselDesktop)
@@ -75,11 +44,22 @@ else()
     message(WARNING "Pusula project not found at ../Pusula — fall back to building without Pusula")
 endif()
 
-target_link_libraries(PikselDesktop PRIVATE Qt6::Widgets Qt6::Qml Qt6::Quick Qt6::QuickWidgets Qt6::DBus)
+target_link_libraries(PikselDesktop PRIVATE
+    piksel_core
+    piksel_surfaces
+    piksel_launcher
+    piksel_settings
+    piksel_applets
+    piksel_shell
+    Qt6::Widgets
+    Qt6::Qml
+    Qt6::Quick
+    Qt6::QuickWidgets
+    Qt6::DBus
+)
 
 target_include_directories(PikselDesktop PRIVATE
     "${CMAKE_CURRENT_BINARY_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/shell"
     "${CMAKE_CURRENT_SOURCE_DIR}/core/src"
 )
