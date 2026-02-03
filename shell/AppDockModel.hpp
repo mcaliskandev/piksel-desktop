@@ -7,7 +7,7 @@
 #include <memory>
 
 class QWindow;
-class PikselCoreClient;
+class PikselSystemClient;
 
 class AppDockModel : public QObject {
     Q_OBJECT
@@ -78,7 +78,7 @@ private:
     QHash<QString, Entry> m_entries;
     QStringList m_order;
 
-    std::unique_ptr<PikselCoreClient> m_core;
+    std::unique_ptr<PikselSystemClient> m_core;
     QHash<QString, PinnedEntry> m_pinned;
     QStringList m_pinnedOrder;
     QVariantList m_cachedPinnedApps;

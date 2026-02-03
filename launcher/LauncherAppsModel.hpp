@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shell/PikselCoreClient.hpp"
+#include "shell/PikselSystemClient.hpp"
 
 #include <QObject>
 #include <QVariantList>
@@ -31,6 +31,6 @@ private:
     void setApps(QVariantList next);
     void updateFromCoreOrFallback(const QString &json);
 
-    PikselCoreClient m_core;
+    PikselSystemClient m_core;
     QVariantList m_apps;
 };

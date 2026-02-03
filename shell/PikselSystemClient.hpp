@@ -3,11 +3,11 @@
 #include <QObject>
 #include <QString>
 
-class PikselCoreClient : public QObject
+class PikselSystemClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit PikselCoreClient(QObject *parent = nullptr);
+    explicit PikselSystemClient(QObject *parent = nullptr);
 
     bool isAvailable() const;
     QString getSetting(const QString &key, const QString &fallback = {}) const;

@@ -1,7 +1,7 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-  <interface name="org.piksel.Core">
+  <interface name="org.piksel.System">
     <method name="GetSetting">
       <arg direction="in" type="s" name="key"/>
       <arg direction="out" type="s" name="value"/>

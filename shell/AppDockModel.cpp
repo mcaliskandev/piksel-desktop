@@ -1,6 +1,6 @@
 #include "AppDockModel.hpp"
 
-#include "shell/PikselCoreClient.hpp"
+#include "shell/PikselSystemClient.hpp"
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -18,14 +18,14 @@ constexpr auto kPinnedAppsKey = "dock/pinnedApps";
 AppDockModel::AppDockModel(QObject* parent)
     : QObject(parent)
 {
-    m_core = std::make_unique<PikselCoreClient>(this);
+    m_core = std::make_unique<PikselSystemClient>(this);
     loadPinnedFromCore();
 
-    connect(m_core.get(), &PikselCoreClient::settingFetched, this, [this](const QString& key, const QString& value) {
+    connect(m_core.get(), &PikselSystemClient::settingFetched, this, [this](const QString& key, const QString& value) {
         if (key == QString::fromLatin1(kPinnedAppsKey))
             applyPinnedFromRaw(value);
     });
-    connect(m_core.get(), &PikselCoreClient::settingChanged, this, [this](const QString& key, const QString&) {
+    connect(m_core.get(), &PikselSystemClient::settingChanged, this, [this](const QString& key, const QString&) {
         if (key == QString::fromLatin1(kPinnedAppsKey))
             loadPinnedFromCore();
     });

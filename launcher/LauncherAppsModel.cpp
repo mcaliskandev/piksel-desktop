@@ -54,12 +54,12 @@ LauncherAppsModel::LauncherAppsModel(QObject *parent)
     : QObject(parent)
     , m_core(this)
 {
-    connect(&m_core, &PikselCoreClient::settingFetched, this, [this](const QString &key, const QString &value) {
+    connect(&m_core, &PikselSystemClient::settingFetched, this, [this](const QString &key, const QString &value) {
         if (key != kCoreAppsKey)
             return;
         updateFromCoreOrFallback(value);
     });
-    connect(&m_core, &PikselCoreClient::settingChanged, this, [this](const QString &key, const QString &value) {
+    connect(&m_core, &PikselSystemClient::settingChanged, this, [this](const QString &key, const QString &value) {
         if (key != kCoreAppsKey)
             return;
         updateFromCoreOrFallback(value);
@@ -90,7 +90,7 @@ void LauncherAppsModel::updateFromCoreOrFallback(const QString &json)
 {
     QVariantList next = parseAppsJson(json);
     if (next.size() <= 1) {
-        // If core doesn't provide apps yet (likely empty), fall back to local scan.
+        // If system service doesn't provide apps yet (likely empty), fall back to local scan.
         next = scanInstalledDesktopApps();
     }
     setApps(std::move(next));

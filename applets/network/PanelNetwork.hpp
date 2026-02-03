@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shell/PikselCoreClient.hpp"
+#include "shell/PikselSystemClient.hpp"
 
 #include <QObject>
 #include <QVariantList>
@@ -23,6 +23,6 @@ signals:
 private:
     void updateNow();
 
-    PikselCoreClient m_core;
+    PikselSystemClient m_core;
     QVariantList m_networks;
 };

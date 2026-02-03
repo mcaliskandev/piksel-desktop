@@ -5,7 +5,7 @@
 #include <QQuickWidget>
 #include <QString>
 #include <string>
-#include "shell/PikselCoreClient.hpp"
+#include "shell/PikselSystemClient.hpp"
 #include "shell/ShellComponent.hpp"
 
 class QQuickItem;
@@ -28,7 +28,7 @@ private:
 
     QQuickItem* m_rootItem = nullptr;
     QColor m_backgroundColor;
-    PikselCoreClient m_core;
+    PikselSystemClient m_core;
 };
 
 #endif // WALLPAPER_HPP

@@ -1,6 +1,6 @@
 set(PIKSEL_SHELL_SRCS
-    PikselCoreClient.cpp
-    PikselCoreClient.hpp
+    PikselSystemClient.cpp
+    PikselSystemClient.hpp
     AppDockModel.cpp
     AppDockModel.hpp
     ShellComponent.hpp

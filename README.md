@@ -25,7 +25,7 @@ See the [LICENSE](LICENSE) file for details.
 
 ## Modules
 - Shell Manager (host process)
-- Core (DBus service/client)
+- System (DBus service/client)
 - Surfaces (panel, desktop + wallpaper)
 - Applets (clock, battery, network, running apps)
 - Launcher

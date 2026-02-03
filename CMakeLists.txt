@@ -25,7 +25,7 @@ add_subdirectory(applets)
 add_subdirectory(settings)
 add_subdirectory(launcher)
 add_subdirectory(surfaces)
-add_subdirectory(core/src)
+add_subdirectory(system)
 
 add_executable(PikselDesktop
     shell/main.cpp
@@ -45,7 +45,7 @@ else()
 endif()
 
 target_link_libraries(PikselDesktop PRIVATE
-    piksel_core
+    piksel_system
     piksel_surfaces
     piksel_launcher
     piksel_settings
@@ -61,5 +61,5 @@ target_link_libraries(PikselDesktop PRIVATE
 target_include_directories(PikselDesktop PRIVATE
     "${CMAKE_CURRENT_BINARY_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/core/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/system"
 )

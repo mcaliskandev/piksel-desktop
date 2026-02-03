@@ -1,6 +1,6 @@
 # Shell (C++ / Qt)
 
-This tree contains the C++ side of the shell: core services, shell coordination, and the code that hosts QML-driven UI modules.
+This tree contains the C++ side of the shell: system services, shell coordination, and the code that hosts QML-driven UI modules.
 
 ## Conventions
 - C++ standard is C++23 (see top-level `CMakeLists.txt`).
@@ -14,7 +14,7 @@ This tree contains the C++ side of the shell: core services, shell coordination,
 - Register and dispatch global keyboard shortcuts.
 
 ## Where to put things
-- `shell/`: global coordination (startup ordering, shared signals, command dispatch) and core/client integration (e.g., DBus clients).
+- `shell/`: global coordination (startup ordering, shared signals, command dispatch) and system/client integration (e.g., DBus clients).
 - `surfaces/`: host containers such as the panel and desktop (load applets/wallpaper plugins).
 - `applets/`: small status/utility applets consumed by surfaces (battery, clock, network, running apps).
 - `launcher/`: the application launcher plugin.

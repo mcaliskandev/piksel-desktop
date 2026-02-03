@@ -19,12 +19,12 @@ PikselWallpaper::PikselWallpaper(QWidget* parent)
     }
     m_rootItem = rootObject();
 
-    connect(&m_core, &PikselCoreClient::settingChanged, this, &PikselWallpaper::onCoreSettingChanged);
+    connect(&m_core, &PikselSystemClient::settingChanged, this, &PikselWallpaper::onCoreSettingChanged);
 
-    // Load persisted color from PikselCore (DBus) on startup without blocking the UI thread.
+    // Load persisted color from PikselSystem (DBus) on startup without blocking the UI thread.
     const QString defaultColor = QStringLiteral("#0081CD");
     applyColor(defaultColor);
-    connect(&m_core, &PikselCoreClient::settingFetched, this, [this](const QString &key, const QString &value) {
+    connect(&m_core, &PikselSystemClient::settingFetched, this, [this](const QString &key, const QString &value) {
         if (key == QStringLiteral("wallpaper/backgroundColor"))
             applyColor(value);
     });

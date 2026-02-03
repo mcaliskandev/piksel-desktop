@@ -3,10 +3,10 @@
 
 class Config;
 
-class CoreService : public QObject {
+class SystemService : public QObject {
     Q_OBJECT
 public:
-    explicit CoreService(Config *config, QObject *parent = nullptr);
+    explicit SystemService(Config *config, QObject *parent = nullptr);
 
 public slots:
     QString GetSetting(const QString &key);

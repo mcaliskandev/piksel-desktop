@@ -49,7 +49,7 @@ void SettingsWindow::loadFromCore()
     m_wallpaperUi->hexEdit->setText(m_currentHex);
     updatePreview(QColor(m_currentHex));
 
-    connect(&m_core, &PikselCoreClient::settingFetched, this, [this](const QString &key, const QString &value) {
+    connect(&m_core, &PikselSystemClient::settingFetched, this, [this](const QString &key, const QString &value) {
         if (key != QStringLiteral("wallpaper/backgroundColor"))
             return;
         m_currentHex = value;

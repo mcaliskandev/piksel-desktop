@@ -1,4 +1,4 @@
-#include "CoreService.hpp"
+#include "SystemService.hpp"
 #include "config/Config.hpp"
 
 #include <QJsonArray>
@@ -76,19 +76,19 @@ static QString scanWifiNetworksJson()
     return QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
 }
 
-CoreService::CoreService(Config *config, QObject *parent)
+SystemService::SystemService(Config *config, QObject *parent)
     : QObject(parent),
       m_config(config)
 {
 }
 
-QString CoreService::GetSetting(const QString &key) {
+QString SystemService::GetSetting(const QString &key) {
     if (key == QStringLiteral("network/wifiNetworks"))
         return scanWifiNetworksJson();
     return m_config->get(key);
 }
 
-void CoreService::SetSetting(const QString &key, const QString &value) {
+void SystemService::SetSetting(const QString &key, const QString &value) {
     const auto oldValue = m_config->get(key);
     m_config->set(key, value);
     if (oldValue != value)

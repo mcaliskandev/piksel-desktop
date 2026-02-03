@@ -1,7 +1,7 @@
 #ifndef SETTINGSWINDOW_HPP
 #define SETTINGSWINDOW_HPP
 
-#include "shell/PikselCoreClient.hpp"
+#include "shell/PikselSystemClient.hpp"
 #include <QString>
 #include <QWidget>
 #include <memory>
@@ -32,7 +32,7 @@ private slots:
     void onApplyColor();
 
 private:
-    PikselCoreClient m_core;
+    PikselSystemClient m_core;
     QString m_currentHex;
     Ui::SettingsWindow *m_ui = nullptr;
     std::unique_ptr<Ui::Form> m_wallpaperUi;

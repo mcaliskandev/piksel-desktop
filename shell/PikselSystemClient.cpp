@@ -1,4 +1,4 @@
-#include "PikselCoreClient.hpp"
+#include "PikselSystemClient.hpp"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -8,11 +8,11 @@
 #include <QDBusReply>
 #include <QTimer>
 
-PikselCoreClient::PikselCoreClient(QObject *parent)
+PikselSystemClient::PikselSystemClient(QObject *parent)
     : QObject(parent),
-      m_service(QStringLiteral("org.piksel.Core")),
-      m_path(QStringLiteral("/org/piksel/Core")),
-      m_interface(QStringLiteral("org.piksel.Core"))
+      m_service(QStringLiteral("org.piksel.System")),
+      m_path(QStringLiteral("/org/piksel/System")),
+      m_interface(QStringLiteral("org.piksel.System"))
 {
     QDBusConnection::sessionBus().connect(
         m_service,
@@ -23,17 +23,17 @@ PikselCoreClient::PikselCoreClient(QObject *parent)
         SLOT(onSettingChanged(QString,QString)));
 }
 
-bool PikselCoreClient::isAvailable() const
+bool PikselSystemClient::isAvailable() const
 {
     auto iface = QDBusConnection::sessionBus().interface();
     return iface && iface->isServiceRegistered(m_service);
 }
 
-void PikselCoreClient::getSettingAsync(const QString &key, const QString &fallback)
+void PikselSystemClient::getSettingAsync(const QString &key, const QString &fallback)
 {
     QDBusInterface iface(m_service, m_path, m_interface, QDBusConnection::sessionBus());
     if (!iface.isValid()) {
-        qWarning().noquote() << "PikselCoreClient: DBus iface invalid for async GetSetting(" << key << ")";
+        qWarning().noquote() << "PikselSystemClient: DBus iface invalid for async GetSetting(" << key << ")";
         emit settingFetched(key, fallback);
         return;
     }
@@ -46,35 +46,35 @@ void PikselCoreClient::getSettingAsync(const QString &key, const QString &fallba
     });
 }
 
-void PikselCoreClient::getSettingAsyncDeferred(const QString &key, const QString &fallback)
+void PikselSystemClient::getSettingAsyncDeferred(const QString &key, const QString &fallback)
 {
     QTimer::singleShot(0, this, [this, key, fallback]() {
         getSettingAsync(key, fallback);
     });
 }
 
-QString PikselCoreClient::getSetting(const QString &key, const QString &fallback) const
+QString PikselSystemClient::getSetting(const QString &key, const QString &fallback) const
 {
     QDBusInterface iface(m_service, m_path, m_interface, QDBusConnection::sessionBus());
     if (!iface.isValid())
     {
-        qWarning().noquote() << "PikselCoreClient: DBus iface invalid for GetSetting(" << key << ")";
+        qWarning().noquote() << "PikselSystemClient: DBus iface invalid for GetSetting(" << key << ")";
         return fallback;
     }
 
     QDBusReply<QString> reply = iface.call(QStringLiteral("GetSetting"), key);
     const QString value = reply.isValid() ? reply.value() : fallback;
     if (key == QStringLiteral("network/wifiNetworks") && value.isEmpty())
-        qWarning() << "PikselCoreClient: network/wifiNetworks returned empty string (likely old PikselCore); try stopping old PikselCore";
+        qWarning() << "PikselSystemClient: network/wifiNetworks returned empty string (likely old PikselSystem); try stopping old PikselSystem";
     return value;
 }
 
-bool PikselCoreClient::setSetting(const QString &key, const QString &value) const
+bool PikselSystemClient::setSetting(const QString &key, const QString &value) const
 {
     QDBusInterface iface(m_service, m_path, m_interface, QDBusConnection::sessionBus());
     if (!iface.isValid())
     {
-        qWarning().noquote() << "PikselCoreClient: DBus iface invalid for SetSetting(" << key << ")";
+        qWarning().noquote() << "PikselSystemClient: DBus iface invalid for SetSetting(" << key << ")";
         return false;
     }
 
@@ -82,7 +82,7 @@ bool PikselCoreClient::setSetting(const QString &key, const QString &value) cons
     return reply.isValid();
 }
 
-void PikselCoreClient::onSettingChanged(const QString &key, const QString &value)
+void PikselSystemClient::onSettingChanged(const QString &key, const QString &value)
 {
     emit settingChanged(key, value);
 }
