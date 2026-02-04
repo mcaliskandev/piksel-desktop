@@ -2,6 +2,7 @@
 #define PANEL_RUNNING_APPS_HPP
 
 #include <QObject>
+#include <QHash>
 #include <QTimer>
 #include <QVariantList>
 
