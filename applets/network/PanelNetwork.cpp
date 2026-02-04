@@ -42,6 +42,8 @@ PanelNetworkStatus::PanelNetworkStatus(QObject *parent)
             emit networksChanged();
         }
     });
+
+    updateNow();
 }
 
 void PanelNetworkStatus::refresh()
