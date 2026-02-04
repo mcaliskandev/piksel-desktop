@@ -7,9 +7,8 @@
 PanelClockStatus::PanelClockStatus(QObject* parent)
     : QObject(parent)
 {
-    m_timer = new QTimer(this);
-    connect(m_timer, &QTimer::timeout, this, &PanelClockStatus::updateNow);
-    m_timer->start(1500);
+    connect(&m_timer, &QTimer::timeout, this, &PanelClockStatus::updateNow);
+    m_timer.start(1000);
     updateNow();
 }
 
@@ -36,11 +35,17 @@ QString PanelClockStatus::hourMin() const
 void PanelClockStatus::updateNow()
 {
     const QDateTime now = QDateTime::currentDateTime();
-
     const QLocale english(QLocale::English);
-    m_month = english.toString(now.date(), QStringLiteral("MMM")).toUpper();
-    m_day = now.toString(QStringLiteral("dd"));
-    m_hourMin = now.toString(QStringLiteral("HH:mm"));
 
+    const QString nextMonth = english.toString(now.date(), QStringLiteral("MMM")).toUpper();
+    const QString nextDay = now.toString(QStringLiteral("dd"));
+    const QString nextHourMin = now.toString(QStringLiteral("HH:mm"));
+
+    if (nextMonth == m_month && nextDay == m_day && nextHourMin == m_hourMin)
+        return;
+
+    m_month = nextMonth;
+    m_day = nextDay;
+    m_hourMin = nextHourMin;
     emit textChanged();
 }

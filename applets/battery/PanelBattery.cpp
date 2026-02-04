@@ -2,12 +2,13 @@
 
 #include <QDir>
 #include <QFile>
-#include <QTimer>
+#include <optional>
 
-static QString readBatteryCapacityPercent()
+static std::optional<int> readBatteryCapacityPercent()
 {
     const QDir powerSupplyDir(QStringLiteral("/sys/class/power_supply"));
-    if (!powerSupplyDir.exists()) return {};
+    if (!powerSupplyDir.exists())
+        return std::nullopt;
 
     const QStringList batteryDirs =
         powerSupplyDir.entryList({QStringLiteral("BAT*")}, QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
@@ -19,18 +20,18 @@ static QString readBatteryCapacityPercent()
         const QString raw = QString::fromUtf8(capacityFile.readAll()).trimmed();
         bool ok = false;
         const int value = raw.toInt(&ok);
-        if (ok && value >= 0 && value <= 100) return QString::number(value);
+        if (ok && value >= 0 && value <= 100)
+            return value;
     }
 
-    return {};
+    return std::nullopt;
 }
 
 PanelBatteryStatus::PanelBatteryStatus(QObject* parent)
     : QObject(parent)
 {
-    m_timer = new QTimer(this);
-    connect(m_timer, &QTimer::timeout, this, &PanelBatteryStatus::updateNow);
-    m_timer->start(30000);
+    connect(&m_timer, &QTimer::timeout, this, &PanelBatteryStatus::updateNow);
+    m_timer.start(30000);
     updateNow();
 }
 
@@ -41,9 +42,9 @@ void PanelBatteryStatus::refresh()
 
 void PanelBatteryStatus::updateNow()
 {
-    const QString raw = readBatteryCapacityPercent();
-    const bool nextAvailable = !raw.isEmpty();
-    const int nextPercentage = nextAvailable ? raw.toInt() : -1;
+    const std::optional<int> percentage = readBatteryCapacityPercent();
+    const bool nextAvailable = percentage.has_value();
+    const int nextPercentage = nextAvailable ? *percentage : -1;
 
     if (m_available != nextAvailable) {
         m_available = nextAvailable;

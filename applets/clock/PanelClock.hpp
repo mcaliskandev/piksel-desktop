@@ -3,8 +3,7 @@
 
 #include <QObject>
 #include <QString>
-
-class QTimer;
+#include <QTimer>
 
 class PanelClockStatus : public QObject {
     Q_OBJECT
@@ -26,7 +25,7 @@ signals:
 private:
     void updateNow();
 
-    QTimer* m_timer = nullptr;
+    QTimer m_timer;
     QString m_month;
     QString m_day;
     QString m_hourMin;

@@ -2,8 +2,7 @@
 #define PANEL_BATTERY_STATUS_HPP
 
 #include <QObject>
-
-class QTimer;
+#include <QTimer>
 
 class PanelBatteryStatus : public QObject {
     Q_OBJECT
@@ -26,7 +25,7 @@ signals:
 private:
     void updateNow();
 
-    QTimer* m_timer = nullptr;
+    QTimer m_timer;
     int m_percentage = -1;
     bool m_available = false;
 };
