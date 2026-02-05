@@ -1,6 +1,7 @@
 #include "Panel.hpp"
 
 #include "applets/battery/PanelBattery.hpp"
+#include "applets/bluetooth/PanelBluetooth.hpp"
 #include "applets/clock/PanelClock.hpp"
 #include "applets/network/PanelNetwork.hpp"
 #include "applets/runningapps/PanelRunningApps.hpp"
@@ -28,10 +29,12 @@ PikselPanel::PikselPanel(QWidget* parent)
 
     rootContext()->setContextProperty("panel", this);
     m_battery = std::make_unique<PanelBatteryStatus>(this);
+    m_bluetooth = std::make_unique<PanelBluetoothStatus>(this);
     m_clock = std::make_unique<PanelClockStatus>(this);
     m_network = std::make_unique<PanelNetworkStatus>(this);
     m_runningApps = std::make_unique<PanelRunningApps>(this);
     rootContext()->setContextProperty("panelBattery", m_battery.get());
+    rootContext()->setContextProperty("panelBluetooth", m_bluetooth.get());
     rootContext()->setContextProperty("panelClock", m_clock.get());
     rootContext()->setContextProperty("panelNetwork", m_network.get());
     rootContext()->setContextProperty("panelRunningApps", m_runningApps.get());
@@ -84,6 +87,20 @@ PikselPanel::PikselPanel(QWidget* parent)
     if (overlayNetworkSize.isValid())
         m_networkWidget->setFixedSize(overlayNetworkSize);
     m_networkWidget->hide();
+
+    m_bluetoothWidget = new QQuickWidget(parent);
+    m_bluetoothWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    m_bluetoothWidget->setClearColor(Qt::transparent);
+    m_bluetoothWidget->rootContext()->setContextProperty("panelBluetooth", m_bluetooth.get());
+    m_bluetoothWidget->setSource(QUrl(QStringLiteral("qrc:/surfaces/panel/BluetoothOverlay.qml")));
+    if (m_bluetoothWidget->status() != QQuickWidget::Ready) {
+        qCritical() << "Failed to load QML bluetooth:" << m_bluetoothWidget->errors();
+    }
+    m_bluetoothRoot = m_bluetoothWidget->rootObject();
+    const QSize overlayBluetoothSize = bluetoothSize();
+    if (overlayBluetoothSize.isValid())
+        m_bluetoothWidget->setFixedSize(overlayBluetoothSize);
+    m_bluetoothWidget->hide();
 
     m_pinnedAppsWidget = new QQuickWidget(parent);
     m_pinnedAppsWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -345,6 +362,57 @@ void PikselPanel::onTriggerNetwork(const qreal anchorCenterX, const qreal panelT
     m_networkWidget->raise();
 }
 
+void PikselPanel::onTriggerBluetooth(const qreal anchorCenterX, const qreal panelTopY)
+{
+    if (!m_bluetoothWidget)
+        return;
+    if (m_bluetoothWidget->isVisible()) {
+        hideBluetooth();
+        return;
+    }
+
+    if (m_bluetooth)
+        m_bluetooth->refresh();
+
+    const QSize size = bluetoothSize();
+    if (size.isValid())
+        m_bluetoothWidget->setFixedSize(size);
+
+    const int margin = 8;
+    const int anchorSpacing = 6;
+    QScreen *screen = nullptr;
+    if (m_bluetoothWidget->parentWidget())
+        screen = m_bluetoothWidget->parentWidget()->screen();
+    if (!screen)
+        screen = QGuiApplication::primaryScreen();
+
+    QRect screenGeo(0, 0, 0, 0);
+    if (screen)
+        screenGeo = screen->availableGeometry();
+
+    const int halfWidth = m_bluetoothWidget->width() / 2;
+    int x = qRound(anchorCenterX) - halfWidth;
+    int y = qRound(panelTopY) - m_bluetoothWidget->height() - anchorSpacing;
+    if (screenGeo.isValid()) {
+        const int minX = screenGeo.x() + margin;
+        const int maxX = screenGeo.x() + screenGeo.width() - m_bluetoothWidget->width() - margin;
+        const int minY = screenGeo.y() + margin;
+        const int maxY = screenGeo.y() + screenGeo.height() - m_bluetoothWidget->height() - margin;
+        x = std::max(minX, std::min(x, maxX));
+        y = std::max(minY, std::min(y, maxY));
+    }
+
+    if (QWidget *parent = m_bluetoothWidget->parentWidget()) {
+        const QPoint local = parent->mapFromGlobal(QPoint(x, y));
+        m_bluetoothWidget->move(local);
+    } else {
+        m_bluetoothWidget->move(x, y);
+    }
+
+    m_bluetoothWidget->show();
+    m_bluetoothWidget->raise();
+}
+
 void PikselPanel::onTriggerPinnedApps(const qreal anchorLeftX, const qreal panelTopY)
 {
     if (!m_pinnedAppsWidget)
@@ -407,6 +475,12 @@ void PikselPanel::hideNetwork() {
         m_networkWidget->hide();
 }
 
+void PikselPanel::hideBluetooth()
+{
+    if (m_bluetoothWidget)
+        m_bluetoothWidget->hide();
+}
+
 void PikselPanel::hidePinnedApps()
 {
     if (m_pinnedAppsWidget)
@@ -443,6 +517,17 @@ QSize PikselPanel::networkSize() const {
         return QSize();
     const QVariant w = m_networkRoot->property("implicitWidth");
     const QVariant h = m_networkRoot->property("implicitHeight");
+    if (w.isValid() && h.isValid())
+        return QSize(w.toInt(), h.toInt());
+    return QSize();
+}
+
+QSize PikselPanel::bluetoothSize() const
+{
+    if (!m_bluetoothRoot)
+        return QSize();
+    const QVariant w = m_bluetoothRoot->property("implicitWidth");
+    const QVariant h = m_bluetoothRoot->property("implicitHeight");
     if (w.isValid() && h.isValid())
         return QSize(w.toInt(), h.toInt());
     return QSize();

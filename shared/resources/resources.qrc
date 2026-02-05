@@ -8,6 +8,7 @@
     <file alias="surfaces/panel/CalendarOverlay.qml">../../surfaces/panel/qml/CalendarOverlay.qml</file>
     <file alias="surfaces/panel/VolumeOverlay.qml">../../surfaces/panel/qml/VolumeOverlay.qml</file>
     <file alias="surfaces/panel/NetworkOverlay.qml">../../surfaces/panel/qml/NetworkOverlay.qml</file>
+    <file alias="surfaces/panel/BluetoothOverlay.qml">../../surfaces/panel/qml/BluetoothOverlay.qml</file>
     <file alias="surfaces/panel/PinnedAppsOverlay.qml">../../surfaces/panel/qml/PinnedAppsOverlay.qml</file>
     <file alias="surfaces/panel/DockContextMenuOverlay.qml">../../surfaces/panel/qml/DockContextMenuOverlay.qml</file>
   </qresource>
@@ -19,6 +20,7 @@
     <file alias="resources/icons/clock.png">icons/clock.png</file>
     <file alias="resources/icons/volume.png">icons/volume.png</file>
     <file alias="resources/icons/network.png">icons/network.png</file>
+    <file alias="resources/icons/connection.png">icons/connection.png</file>
     <file alias="resources/icons/settings.png">icons/settings.png</file>
     <file alias="resources/icons/wifi_strength_full.png">icons/wifi_strength_full.png</file>
     <file alias="resources/icons/wifi_strength_high.png">icons/wifi_strength_high.png</file>

@@ -147,6 +147,24 @@ import QtQuick.Layouts
             }
 
             ToolButton {
+                id: btnBluetooth
+                icon.source: "qrc:/resources/icons/connection.png"
+                icon.width: root.panelIconSize
+                icon.height: root.panelIconSize
+                flat: true
+                Layout.preferredWidth: root.panelButtonSize
+                Layout.preferredHeight: root.panelButtonSize
+                onClicked: {
+                    const panelTopLeft = panel && panel.mapToGlobalPoint ? panel.mapToGlobalPoint(0, 0) : Qt.point(0, 0)
+                    const localTopCenter = btnBluetooth.mapToItem(null, btnBluetooth.width / 2, 0)
+                    const anchorTopCenter = panel && panel.mapToGlobalPoint
+                        ? panel.mapToGlobalPoint(localTopCenter.x, localTopCenter.y)
+                        : Qt.point(localTopCenter.x, localTopCenter.y)
+                    panel.onTriggerBluetooth(anchorTopCenter.x, panelTopLeft.y)
+                }
+            }
+
+            ToolButton {
                 id: btnSound
                 icon.source: "qrc:/resources/icons/volume.png"
                 icon.width: root.panelIconSize

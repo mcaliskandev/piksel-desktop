@@ -14,6 +14,7 @@
 #include "shell/ShellComponent.hpp"
 
 class PanelBatteryStatus;
+class PanelBluetoothStatus;
 class PanelClockStatus;
 class PanelNetworkStatus;
 class PanelRunningApps;
@@ -34,6 +35,7 @@ public:
     Q_INVOKABLE void onTriggerCalendar(const qreal anchorRightX, const qreal panelTopY);
     Q_INVOKABLE void onTriggerVolume(const qreal anchorRightX, const qreal panelTopY);
     Q_INVOKABLE void onTriggerNetwork(const qreal anchorCenterX, const qreal panelTopY);
+    Q_INVOKABLE void onTriggerBluetooth(const qreal anchorCenterX, const qreal panelTopY);
     Q_INVOKABLE void onTriggerPinnedApps(const qreal anchorLeftX, const qreal panelTopY);
     Q_INVOKABLE void onTriggerDockContextMenu(const qreal anchorLeftX, const qreal panelTopY, const QString& appId);
     Q_INVOKABLE void hideDockContextMenu();
@@ -55,13 +57,16 @@ private:
     void hideCalendar();
     void hideVolume();
     void hideNetwork();
+    void hideBluetooth();
     void hidePinnedApps();
     QSize calendarSize() const;
     QSize volumeSize() const;
     QSize networkSize() const;
+    QSize bluetoothSize() const;
     QSize pinnedAppsSize() const;
 
     std::unique_ptr<PanelBatteryStatus> m_battery;
+    std::unique_ptr<PanelBluetoothStatus> m_bluetooth;
     std::unique_ptr<PanelClockStatus> m_clock;
     std::unique_ptr<PanelNetworkStatus> m_network;
     std::unique_ptr<PanelRunningApps> m_runningApps;
@@ -72,6 +77,8 @@ private:
     QObject *m_volumeRoot = nullptr;
     QQuickWidget *m_networkWidget = nullptr;
     QObject *m_networkRoot = nullptr;
+    QQuickWidget *m_bluetoothWidget = nullptr;
+    QObject *m_bluetoothRoot = nullptr;
     QQuickWidget *m_pinnedAppsWidget = nullptr;
     QObject *m_pinnedAppsRoot = nullptr;
     QQuickWidget *m_dockContextWidget = nullptr;
