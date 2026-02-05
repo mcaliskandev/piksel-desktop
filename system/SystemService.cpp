@@ -76,6 +76,103 @@ static QString scanWifiNetworksJson()
     return QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
 }
 
+static bool bluetoothPowered(const QString &bluetoothctl)
+{
+    QProcess showProc;
+    showProc.start(bluetoothctl, {QStringLiteral("show")});
+    if (!showProc.waitForStarted(250) || !showProc.waitForFinished(1500))
+        return false;
+    if (showProc.exitStatus() != QProcess::NormalExit || showProc.exitCode() != 0)
+        return false;
+
+    const QString out = QString::fromUtf8(showProc.readAllStandardOutput());
+    const QStringList lines = out.split(QLatin1Char('\n'), Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        const QString trimmed = line.trimmed();
+        if (!trimmed.startsWith(QStringLiteral("Powered:"), Qt::CaseInsensitive))
+            continue;
+        return trimmed.contains(QStringLiteral("yes"), Qt::CaseInsensitive);
+    }
+
+    return false;
+}
+
+static bool bluetoothConnected(const QString &bluetoothctl, const QString &address)
+{
+    if (address.isEmpty())
+        return false;
+
+    QProcess infoProc;
+    infoProc.start(bluetoothctl, {QStringLiteral("info"), address});
+    if (!infoProc.waitForStarted(250) || !infoProc.waitForFinished(1500))
+        return false;
+    if (infoProc.exitStatus() != QProcess::NormalExit || infoProc.exitCode() != 0)
+        return false;
+
+    const QString out = QString::fromUtf8(infoProc.readAllStandardOutput());
+    const QStringList lines = out.split(QLatin1Char('\n'), Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        const QString trimmed = line.trimmed();
+        if (!trimmed.startsWith(QStringLiteral("Connected:"), Qt::CaseInsensitive))
+            continue;
+        return trimmed.contains(QStringLiteral("yes"), Qt::CaseInsensitive);
+    }
+
+    return false;
+}
+
+static QString scanBluetoothDevicesJson()
+{
+    const QString bluetoothctl = QStandardPaths::findExecutable(QStringLiteral("bluetoothctl"));
+
+    QJsonObject root;
+    QJsonArray devices;
+    root.insert(QStringLiteral("powered"), false);
+    root.insert(QStringLiteral("devices"), devices);
+
+    if (bluetoothctl.isEmpty())
+        return QString::fromUtf8(QJsonDocument(root).toJson(QJsonDocument::Compact));
+
+    const bool powered = bluetoothPowered(bluetoothctl);
+    root.insert(QStringLiteral("powered"), powered);
+
+    QProcess devicesProc;
+    devicesProc.start(bluetoothctl, {QStringLiteral("devices")});
+    if (!devicesProc.waitForStarted(250) || !devicesProc.waitForFinished(2000))
+        return QString::fromUtf8(QJsonDocument(root).toJson(QJsonDocument::Compact));
+    if (devicesProc.exitStatus() != QProcess::NormalExit || devicesProc.exitCode() != 0)
+        return QString::fromUtf8(QJsonDocument(root).toJson(QJsonDocument::Compact));
+
+    const QString out = QString::fromUtf8(devicesProc.readAllStandardOutput());
+    const QStringList lines = out.split(QLatin1Char('\n'), Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        // Example: "Device 11:22:33:44:55:66 My Headphones"
+        if (!line.startsWith(QStringLiteral("Device ")))
+            continue;
+
+        const QStringList parts = line.split(QLatin1Char(' '), Qt::SkipEmptyParts);
+        if (parts.size() < 2)
+            continue;
+
+        const QString address = parts.value(1).trimmed();
+        if (address.isEmpty())
+            continue;
+
+        QString name;
+        if (parts.size() > 2)
+            name = parts.mid(2).join(QStringLiteral(" ")).trimmed();
+
+        QJsonObject device;
+        device.insert(QStringLiteral("address"), address);
+        device.insert(QStringLiteral("name"), name);
+        device.insert(QStringLiteral("connected"), bluetoothConnected(bluetoothctl, address));
+        devices.push_back(device);
+    }
+
+    root.insert(QStringLiteral("devices"), devices);
+    return QString::fromUtf8(QJsonDocument(root).toJson(QJsonDocument::Compact));
+}
+
 SystemService::SystemService(Config *config, QObject *parent)
     : QObject(parent),
       m_config(config)
@@ -85,6 +182,8 @@ SystemService::SystemService(Config *config, QObject *parent)
 QString SystemService::GetSetting(const QString &key) {
     if (key == QStringLiteral("network/wifiNetworks"))
         return scanWifiNetworksJson();
+    if (key == QStringLiteral("bluetooth/devices"))
+        return scanBluetoothDevicesJson();
     return m_config->get(key);
 }
 
