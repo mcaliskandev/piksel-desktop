@@ -1,4 +1,6 @@
 set(PIKSEL_APPLETS_SRCS
+    bluetooth/PanelBluetooth.cpp
+    bluetooth/PanelBluetooth.hpp
     battery/PanelBattery.cpp
     battery/PanelBattery.hpp
     clock/PanelClock.cpp
